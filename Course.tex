@@ -1,0 +1,1246 @@
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+\usepackage{graphicx}
+\usepackage{url}
+\usepackage{verbatim}
+\usepackage{listingsutf8}
+\usepackage{color}
+\usepackage[francais]{babel}
+
+
+
+\definecolor{listinggray}{gray}{0.9}
+\definecolor{lbcolor}{rgb}{0.9,0.9,0.9}
+\lstset{
+backgroundcolor=\color{lbcolor},
+    tabsize=4,    
+%   rulecolor=,
+    language=[GNU]C++,
+        basicstyle=\scriptsize,
+        upquote=true,
+        aboveskip={1.5\baselineskip},
+        columns=fixed,
+        showstringspaces=false,
+        extendedchars=false,
+        breaklines=true,
+        prebreak = \raisebox{0ex}[0ex][0ex]{\ensuremath{\hookleftarrow}},
+        frame=single,
+        numbers=left,
+        showtabs=false,
+        showspaces=false,
+        showstringspaces=false,
+        identifierstyle=\ttfamily,
+        keywordstyle=\color[rgb]{0,0,1},
+        commentstyle=\color[rgb]{0.026,0.112,0.095},
+        stringstyle=\color[rgb]{0.627,0.126,0.941},
+        numberstyle=\color[rgb]{0.205, 0.142, 0.73},
+%        \lstdefinestyle{C++}{language=C++,style=numbers}’.
+}
+\lstset{
+    backgroundcolor=\color{lbcolor},
+    tabsize=4,
+  language=C++,
+  captionpos=b,
+  tabsize=3,
+  frame=lines,
+  numbers=left,
+  numberstyle=\tiny,
+  numbersep=5pt,
+  breaklines=true,
+  showstringspaces=false,
+  basicstyle=\footnotesize,
+%  identifierstyle=\color{magenta},
+  keywordstyle=\color[rgb]{0,0,1},
+  commentstyle=\color{Darkgreen},
+  stringstyle=\color{red}
+  }
+
+\lstset{%
+            inputencoding=utf8,
+                extendedchars=true,
+                literate=%
+                {é}{{\'e}}{1}%
+                {è}{{\`e}}{1}%
+                {à}{{\`a}}{1}%
+                {ç}{{\c{c}}}{1}%
+                {œ}{{\oe}}{1}%
+                {ù}{{\`u}}{1}%
+                {É}{{\'E}}{1}%
+                {È}{{\`E}}{1}%
+                {À}{{\`A}}{1}%
+                {Ç}{{\c{C}}}{1}%
+                {Œ}{{\OE}}{1}%
+                {Ê}{{\^E}}{1}%
+                {ê}{{\^e}}{1}%
+                {î}{{\^i}}{1}%
+                {ô}{{\^o}}{1}%
+                {û}{{\^u}}{1}%
+                {ë}{{\¨{e}}}1
+                {û}{{\^{u}}}1
+                {â}{{\^{a}}}1
+                {Â}{{\^{A}}}1
+                {Î}{{\^{I}}}1
+        }
+% Use escapechar and \color{<color>}{<text>} to color function names properly, that is already defined as a different color keyword.
+%
+% \begin{lstlisting}[escapechar = ?]
+% boolean;
+% ?\color{function}{boolean}?(1);
+% \end{lstlisting}
+
+\title{C++ course}
+\author{Simon CHEVOLLEAU }
+\date{February 2020}
+\lstset{inputencoding=utf8/latin1}
+
+
+\begin{document}
+
+\maketitle
+\tableofcontents
+
+
+
+\section{Programme de base}
+Compiler un programme :
+\begin{lstlisting}{language = bash}
+g++ -std=c++17 fichier.cpp -o fichier.out
+\end{lstlisting}
+
+Les programmes de base comportent les commandes suivantes:
+\begin{itemize}
+    \item "include ..." : il va permettre de copier du code venant de bibliothèques standards ou de vos propres fichiers.
+    \item "int maint() {}" : c'est le point d'entrée de notre programme, où les instructions seront exécutées.
+    \item "return 0;" : c'est l'instruction qui conclut la fonction main. 0 veut dire que tout s'est bien passé.
+    \item "//" : est un commantaire sur une ligne.
+    \item "/* ... */" est un bloc de commentaire.
+\end{itemize}{}
+\subsection{Les variables}
+Les variables permettent de stocker une valeur et de lui associer un nom. Deux façon d'assigner une valeur à une variable.
+\begin{itemize}
+    \item La façon c++ avec "typ nomVar {valeur}".
+    \item La façon c héritée avec "type nomVar = valeur".
+\end{itemize}{}
+Quelques régles d'indentification des variables:
+\begin{itemize}
+    \item Elles doivent commencer par une lettre.
+    \item Elles ne doivent pas utiliser un mot-clé déjà utilisé tel que "int" ou "return".
+\end{itemize}{}
+Dans la pratique on essayer de donner un nom explicite à une variable. Les variables ont une portée locale si déclarée dans une fonction ou bien globale si déclarée en dehors des globales. C'est une bonne pratique de déclarer ses variables dans la plus petite portée possible.
+\subsubsection{Les littéraux}
+Un littéral est une valeur écrite littéralement dans le code (chaînes de caractères, caractères...).
+
+\subsubsection{Les caractères}
+Une variable de type caractère s'écrit : char nomVar. Une chaîne de caractère est un ensemble de caractères. Certains caractères peuvent être interprété par le compileur:
+\begin{itemize}
+    \item \textbackslash ' qui permet d’afficher un guillemet simple '.
+    \item \textbackslash " qui permet d’afficher un guillemet double ".
+    \item \textbackslash n qui permet d’aller à la ligne, comme std::endl.
+    \item \textbackslash t qui permet de faire une tabulation horizontale.
+    \item  \textbackslash\textbackslash  qui permet d’afficher un antislash \\.
+\end{itemize}{}
+
+\subsubsection{Les nombres}
+Il existe 2 types de variables pour stocker les nombres:
+\begin{itemize}
+    \item "int nomVar" : définissant les nombres entiers.
+    \item "double nomVar" : définissant les nombres à virgules (flottants).
+\end{itemize}
+
+Les calculs respectent la distributivité, l'associativité, la commutativité et la priorité des opérateurs:
+
+\begin{lstlisting}[language = C++]
+#include <iostream>
+
+int main()
+{
+    std::cout << "Commutativité :" << std::endl;
+    std::cout << "2 + 3 = " << 2 + 3 << std::endl;
+    std::cout << "3 + 2 = " << 3 + 2 << std::endl;
+ 
+    std::cout << "Associativité :" << std::endl;
+    std::cout << "2 + (3 + 4) = " << 2 + (3 + 4) << std::endl;
+    std::cout << "(2 + 3) + 4 = " << (2 + 3) + 4 << std::endl;
+ 
+    std::cout << "Distributivité :" << std::endl;
+    std::cout << "2 * (4 + 3) = " << 2 * (4 + 3) << std::endl;
+    std::cout << "2 * 4 + 2 * 3 = " << 2 * 4 + 2 * 3 << std::endl;
+    
+    std::cout << "Priorité des opérateurs :" << std::endl;
+    std::cout << "2 * 6 + 3 = " << 2 * 6 + 3 << std::endl;
+    std::cout << "2 * (6 + 3) = " << 2 * (6 + 3) << std::endl;
+    std::cout << "2 * 4 - 6 / 2 = " << 2 * 4 - 6 / 2 << std::endl;
+
+    return 0;
+}
+
+\end{lstlisting}
+
+\subsubsection{Les chaînes de caractères}
+Les chaînes de caractères sont en faîte un tableau de caractères. On définit une variable de type chaîne de caractère par "std::string" (il faut inclure la librairie <string>).
+
+\subsubsection{Les constances}
+Les variables constantes ne peuvent être modifiées : "type const nomVar {valeur}". En pratique le "const" peut être placé devant ou derrière le type, "const" s'applique en priorité à ce qui est à sa gauche immédiate, mais s'il n'y a rien, il s'appliquera alors à ce qui est à sa droite.
+\subsubsection{Assignation}
+Pour assigner une valeur à une variable on utilisera "nomVar = nouvelle valeur". Il existe des raccourci pour les opérations +, -,*, / et \% : "a = a +b" peut aussi s'écrire " a += b". De même, on peut rapidement incrémenter ou décrémenter de 1 : "a++", "++a", "a--" et "--a".
+
+\subsubsection{Définir automatique les types de variable}
+On peut rapidement définir et automatique définir les types par l'usage du type "auto". Il faut cependant faire attention à l'utilisation de auto pour les chaîne de caractères car il faudra préciser un s comme ici:
+\begin{lstlisting}[language =C++]
+    #include <string>
+
+int main()
+{
+    // Écrivez cette ligne une seule fois.
+    using namespace std::literals;
+
+    // Puis vous pouvez déclarer autant de chaînes de caractères que vous voulez.
+    auto chaine { "Du texte."s };
+    auto autre_chaine { "Texte alternatif."s };
+    auto encore_une_chaine { "Allez, un dernier pour la route."s };
+
+    return 0;
+}
+
+\end{lstlisting}{}
+Auto permet de raccourcir le code et d'avoir un code plus évolutif.
+
+\section{Les conditions}
+\subsection{XOR - ou le OU exclusif}
+Le OR que nous avons vu plus tôt dans ce chapitre est dit « inclusif ». Ainsi, a || b signifie a, ou b, ou les deux. Un OU dit « exclusif », indique si a et b renvoient la même chose, l’expression est évaluée à false, sinon à true:
+\begin{lstlisting}[language=C++]
+    #include <iostream>
+
+int main()
+{
+    std::cout << std::boolalpha;
+
+    bool const deux_false { (false && !false) || (false && !false) };
+    std::cout << "(false && !false) || (false && !false) == " << deux_false << std::endl;
+
+    bool const true_false { (true && !false) || (false && !true) };
+    std::cout << "(true && !false) || (false && !true) == " << true_false << std::endl;
+
+    bool const false_true { (false && !true) || (true && !false) };
+    std::cout << "(false && !true) || (true && !false) == " << false_true << std::endl;
+
+    bool const deux_true { (true && !true) || (true && !true) };
+    std::cout << "(true && !true) || (true && !true) == " << deux_true << std::endl;
+    
+    return 0;
+}
+\end{lstlisting}
+On peut également utilisé xor (<ciso646>).
+
+\section{Les boucles}
+"break" permet de sortir de la boucle lorsqu'il est rencontré. A l'inverse "continue" permet de sauter l'itération et de continuer un tour de boucle.
+
+\section{Les tableaux}
+\subsection{Les vectors}
+"std::vector" (<vector>) permet la création d'un tableau dynamique.
+\begin{lstlisting}[language = C++]
+    std::vector</* type des éléments du tableau */> identifiant {valeur1, valeur2};
+\end{lstlisting}{}
+
+\subsection{Premier et dernier élément}
+\begin{lstlisting}[language=C++]
+    std::cout << "Le premier élément est " << tableau_de_int.front() << "." << std::endl;
+    std::cout << "Le dernier élément est " << tableau_de_int.back() << "." << std::endl;
+\end{lstlisting}{}
+
+\subsection{Taille d'un tableau}
+\begin{lstlisting}[language=c++]
+auto const taille { std::size(tableau_de_int) };
+\end{lstlisting}{}
+
+\subsection{Tableau et boucle for}
+Il existe une autre boucle for pour parcourir les éléments d'un tableau:
+\begin{lstlisting}[language=C++]
+for (/* type d'un élément du tableau ou auto */ identifiant : /* tableau à parcourir */)
+{
+    // Manipuler identifiant, en l'affichant par exemple.
+}
+\end{lstlisting}
+\begin{lstlisting}[language=C++]
+    for (auto const element : tableau_entiers)
+    {
+        std::cout << element << std::endl;
+    }
+\end{lstlisting}
+\subsection{Mon tableau est-il vide?}
+La fonction "std::empty" va permettre de vérifier si le contenu d'un tableau est vide ou non.
+
+\subsection{Ajouter des éléments}
+La fonction "push\_back" va permettre de rajouter un élément à la fin de notre conteneur:
+\begin{lstlisting}[language=C++]
+    tableau_de_string.push_back("Mais je vais en ajouter une autre.");
+    tableau_de_int.push_back(48);
+\end{lstlisting}{}
+
+\subsection{Suppresion des éléments}
+On peut retirer le dernier élément du conteneur avec la fonction "pop\_back()":
+\begin{lstlisting}[language=C++]
+    tableau_de_int.pop_back();
+\end{lstlisting}[]
+On peut également supprimer tous les éléments d'un conteneur avec la fonction "clear()":
+\begin{lstlisting}[language=c++]
+     tableau_de_int.clear();
+\end{lstlisting}[]
+
+\subsection{Remplir le tableau}
+On peut remplir un tableau avec une valeur unique avec la fonction "assign()":
+\begin{lstlisting}[language=C++]
+    // On ajoute dix fois la valeur 42.
+    valeurs.assign(10, 42);
+\end{lstlisting}
+
+
+\section{Array}
+A l'inverse d'un vecteur, un array a une taille fixe. On peut remplir toutes les valeurs d'un array avec la fonction "fill()":
+
+\begin{lstlisting}[language=C++]
+    // On remplit de 42.
+    valeurs.fill(42);
+\end{lstlisting}{}
+
+On retrouvera les mêmes fonctions pour la taille etc que pour un vector.
+
+\section{String}
+Une chaîne de caractères est en faite un tableau de caractères de type vector. On peut alors boucler sur les caractères et utiliser toutes les fonctions associées au type vector.
+
+
+\section{Les pointeurs}
+\begin{lstlisting}[language=C++
+    // Dans le cas d'un conteneur modifiable.
+std::/* Le conteneur utilisé. */::iterator identificateur { /* L'élément sur lequel pointer. */ };
+// Dans le cas d'un conteneur const.
+std::/* Le conteneur utilisé. */::const_iterator identificateur { /* L'élément sur lequel pointer. */ };
+\end{lstlisting}
+
+\begin{lstlisting}[language=C++]
+    auto identificateur { /* L'élément sur lequel pointer. */ };
+\end{lstlisting}{}
+
+Ainsi, on peut pointer sur l'élément de fin et de début d'un conteneur par:
+\begin{lstlisting}[language=C++]
+        auto fin_tableau { std::end(tableau) };
+\end{lstlisting}[]
+
+On va pouvoir alors accéder et modifier une variable par l'intermédiaire d'un pointeur, en utilisant *pointeur:
+
+\begin{lstlisting}[language=C++]
+            std::string tableau { "Tu texte." };
+    auto debut_tableau { std::begin(tableau) };
+
+    // On affiche le premier élément du tableau.
+    std::cout << *debut_tableau << std::endl;
+    // Et on peut même le modifier, comme ce qu'on fait avec les références, ou les crochets.
+    *debut_tableau = 'D';
+    // On vérifie.
+    std::cout << tableau << std::endl;
+
+\end{lstlisting}
+
+Pour accéder à l'élément précèdent ou suivant il faudra alors décrémenter ou incrémenter le pointeur.
+
+"std::end" renvoie un itérateur sur un élément inexistant, qui indique la fin de la collection. Il ne faut jamais déréférencer "std::end"!
+
+\subsection{Valeur pointée constante}
+On différencie la constance de l'itérateur et la constance de l'objet pointé. "const" sur un itérateur empêchéra de modifié le pointeur, mais l'utilisation de "std::cbegin" et "std::cend" va garantir la constance des éléments pointés d'un conteneur.
+
+\begin{lstlisting}[language=c++]
+    std::string mot { "Donjour" };
+
+    // Itérateur constant sur un élément modifiable.
+    auto const iterateur_constant { std::begin(mot) };
+
+    // Ceci est impsosible.
+    // it = std::end(mot);
+
+    // Ceci est parfaitement autorisé.
+    *iterateur_constant = 'B';
+
+    auto iterateur_non_constant { std::cbegin(mot) };
+
+    // Ceci est impossible.
+    // *iterateur_non_constant = 'D';
+
+    // Ceci est parfaitement autorisé.
+    iterateur_non_constant = std::cend(mot) - 1;
+\end{lstlisting}{}
+
+\subsection{Itérer depuis la fin}
+On peut parcourir un conteneur de la fin vers le début en utilisant "std::rbegin" (reverse begin) et "std::rend" (reverse end).
+
+\begin{lstlisting}[language=C++]
+    std::vector<int> const tableau { -1, 28, 346, 84 };
+
+    // Affiche depuis la fin, en commençant par 84.
+    for (auto it { std::rbegin(tableau) }; it != std::rend(tableau); ++it)
+    {
+        std::cout << *it << std::endl;
+    }
+\end{lstlisting}
+Et comme pour les autres, les itérateurs peuvent être déclarés comme constant avec "std::crbegin" et "std::crend".
+
+La fonction "erase" va permettre de supprimer plusieurs éléments d'un conteneur.
+\begin{lstlisting}[language=c++]
+std::vector<int> nombres { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 };
+    // Certains éléments.
+    nombres.erase(std::begin(nombres) + 2, std::begin(nombres) + 5);
+
+    for (auto nombre : nombres)
+    {
+        std::cout << nombre << std::endl;
+    }
+
+    std::cout << std::endl;
+
+    std::string phrase { "Voici une phrase beurk !" };
+    // Jusqu'à la fin.
+    phrase.erase(std::begin(phrase) + 16, std::end(phrase));
+    std::cout << phrase << std::endl;
+\end{lstlisting}
+
+\subsection{Algorithmes pour les conteneurs}
+La plupart des algorithmes sont disponibles dans la libraire "<algorithm>".
+\subsection{Compter les occurences}
+"std::count" va permettre de compter les occurences d'une valeur dans un conteneur.
+
+\begin{lstlisting}[language=C++]
+    std::string const phrase { "Exemple illustrant le tutoriel C++ de Zeste de Savoir." };
+
+    // Toute la collection.
+    auto const total_phrase { std::count(std::begin(phrase), std::end(phrase), 'e') };
+    std::cout << "Dans la phrase entière, il y a " << total_phrase << " 'e' minuscule." << std::endl;
+    
+    // Un sous-ensemble seulement de la collection.
+    auto const total_premier_mot { std::count(std::begin(phrase), std::begin(phrase) + 7, 'e') };
+    std::cout << "Dans le premier mot, il y a " << total_premier_mot << " 'e' minuscule." << std::endl;
+\end{lstlisting}
+
+\subsection{Trouver un élément}
+"std::find" va permettre de retourner un itérateur sur le premier élément correspond à la recherche, ou bien le deuxième argument si rien n'est trouvé.
+
+\begin{lstlisting}[language=C++]
+    std::string const phrase { "Exemple illustrant le tutoriel C++ de Zeste de Savoir." };
+
+    // On obtient un itérateur pointant sur le premier espace trouvé.
+    // Si l'on n'avait rien trouvé, on aurait obtenu std::end(phrase) comme valeur de retour.
+    auto const iterateur_premier_mot { std::find(std::begin(phrase), std::end(phrase), ' ') };
+
+    // On peut donc s'en servir ici. Même si l'on modifie la longueur du premier mot, on est assuré que cette solution marche.
+    auto const total_premier_mot { std::count(std::begin(phrase), iterateur_premier_mot, 'e') };
+    std::cout << "Dans le premier mot, il y a " << total_premier_mot << " 'e' minuscule." << std::endl;    
+\end{lstlisting}
+
+\subsection{Trier une collection}
+C'est algorithme ne marchera que sur des conteneurs modifiables (non "const"). On peut également utiliser "std::reverse" qui va permettre d'inverser l'ordre des éléments d'une collection.
+\begin{lstlisting}[language=C++]
+    std::vector<double> constantes_mathematiques { 2.71828, 3.1415, 1.0836, 1.4142, 1.6180 };
+    std::sort(std::begin(constantes_mathematiques), std::end(constantes_mathematiques));
+
+    for (auto constante : constantes_mathematiques)
+    {
+        std::cout << constante << std::endl;
+    }
+\end{lstlisting}
+Puisque "std::list" n'utilise que des itérateurs bidirectionnelles, il va fallooir utiliser une autre fonction.
+
+\begin{lstlisting}[language=C++]
+    std::list<int> liste { 4, -8, 45, 2 };
+    liste.sort();
+
+    for (int i : liste)
+    {
+        std::cout << i << std::endl;
+    }
+\end{lstlisting}[]
+
+\subsection{Suppression d'éléments}
+On va pouvoir supprmer plusieurs fois un élément d'un conteneur avec "std::remove".
+
+\begin{lstlisting}[language=C++]
+    std::string paroles { "I'm blue, da ba dee da ba daa !" };
+
+    auto iterateur_fin { std::remove(std::begin(paroles), std::end(paroles), 'b') };
+    paroles.erase(iterateur_fin, std::end(paroles));
+
+    std::cout << paroles << std::endl;
+\end{lstlisting}[]
+
+\subsection{Rechercher un sous-ensemble dans un ensemble}
+"std::search" peut permettre de chercher un mot dans une phrase par exemple. Cette fonction attend les arguments suivant.
+
+\begin{itemize}
+    \item Le premier est l’itérateur de début de la collection à fouiller.
+    \item Le deuxième est l’itérateur de fin.
+    \item Le troisième est l’itérateur de début de la sous-collection à rechercher.
+    \item Le quatrième est l’itérateur de fin.
+\end{itemize}{}
+
+\begin{lstlisting}[language=C++]
+    std::string const phrase { "Un exemple de phrase avec plusieurs mots." };
+    auto const debut { std::begin(phrase) };
+    auto const fin { std::end(phrase) };
+    
+    // Rappel : std::boolalpha permet d'afficher 'true' ou 'false' et non '1' ou '0'.
+    std::cout << std::boolalpha;
+    
+    std::string mot { "mot" };
+    std::cout << (std::search(debut, fin, std::begin(mot), std::end(mot)) != fin) << std::endl;
+    
+    mot = "exemmple";
+    std::cout << (std::search(debut, fin, std::begin(mot), std::end(mot)) != fin) << std::endl;
+\end{lstlisting}{}
+
+\subsection{Vérifier l'égalité de deux ensembles}
+"std::equal" attend 4 arguments :
+\begin{itemize}
+    \item L’itérateur de début du premier ensemble.
+    \item L’itérateur de fin du premier ensemble.
+    \item L’itérateur de début du deuxième ensemble.
+    \item L’itérateur de fin du deuxième ensemble.
+\end{itemize}{}
+
+\begin{lstlisting}[language=C++]
+    std::vector<int> const premier { 1, 2, 3, 4 };
+    std::vector<int> const second { 1, 2, 3, 4, 5 };
+    std::vector<int> const troisieme { 1, 2, 3, 4 };
+    
+    std::cout << std::boolalpha;
+    std::cout << std::equal(std::begin(premier), std::end(premier), std::begin(second), std::end(second)) << std::endl;
+    std::cout << std::equal(std::begin(premier), std::end(premier), std::begin(troisieme), std::end(troisieme)) << std::endl;
+\end{lstlisting}{}
+
+\section{Les prédicats}
+Un prédicat est une expression qui prend, ou non, des arguemnts et renvoie un booléen.
+On peut ainsi changer le fonctionnement de fonctions.
+Par exemple, trier une liste dans l'ordre décroissant:
+\begin{lstlisting}[language=C++]
+    std::cout << std::boolalpha;
+    // On peut l'utiliser directement.
+    std::cout << std::greater<int>{}(2, 3) << std::endl;
+    std::cout << std::greater<int>{}(6, 3) << std::endl;
+    std::cout << std::greater<double>{}(0.08, 0.02) << std::endl;
+    
+    // Ou bien à travers une variable, qu'on appelle comme une fonction.
+    std::greater<int> foncteur {};
+    std::cout << foncteur(-78, 9) << std::endl;
+    std::cout << foncteur(78, 8) << std::endl;
+\end{lstlisting}{}
+
+\subsection{Prédicats pour caractères}
+\begin{lstlisting}[language=C++]
+    char const lettre { 'A' };
+
+    std::cout << "Est-ce que " << lettre << " est une minuscule ? " << islower(lettre) << std::endl;
+    std::cout << "Est-ce que " << lettre << " est une majuscule ? " << isupper(lettre) << std::endl;
+    std::cout << "Est-ce que " << lettre << " est un chiffre ? " << isdigit(lettre) << std::endl;
+    
+    char const chiffre { '7' };
+    
+    std::cout << "Est-ce que " << chiffre << " est un chiffre ? " << isdigit(chiffre) << std::endl;
+    std::cout << "Est-ce que " << chiffre << " est un signe de ponctuation ? " << ispunct(chiffre) << std::endl;
+\end{lstlisting}{}
+
+
+\section{Les flux}
+Pour spécifier un chemin d'accès, les caractères d'échappement peuvent alourdir le code. On utilisera alors des chaînes brutes:
+\begin{lstlisting}[language=C++]
+    std::cout << R"(Elle a dit "Va dans le dossier C:\Program Files" et regarde.)" << std::endl;
+    
+    // Oups, ça ne marche pas...
+    //std::cout << R"(Il a écrit "f(x)" au tableau.)" << std::endl;
+
+    // Heureusement, je peux choisir moi-même mes délimiteurs.
+    // Ici, tout ce qui est entre "&( et )&" n'est pas interprété.
+    std::cout << R"&(Il a écrit "f(x)" au tableau.)&" << std::endl;
+\end{lstlisting}{}
+
+\subsection{Ecrire dans un fichier}
+"stdd::ofstream" va permettre de sauvegarder dans un fichier des informations. 
+\begin{lstlisting}[language=C++]
+    // Je veux ouvrir un fichier nommé 'sortie.txt', qui se trouve dans le dossier du projet.
+    // S'il existe, il sera ouvert. Sinon, il sera d'abord créé puis ouvert.
+    // Pour éviter de réécrire dans le fichier on peut append comme ceci:
+    //std::ofstream fichier { "sortie.txt", std::ios::app };
+    std::ofstream fichier { "sortie.txt" };
+    // On écrit un 3, un espace et un 4.
+    fichier << 3 << " " << 4;
+    
+    // Va permettre d'écrire avec des accents etc. 
+    std::vector<std::string> const phrases
+    {
+        u8"éèéèéèé.\n",
+    };
+\end{lstlisting}{}
+
+\subsection{Lire dans un fichier}
+"std::ifstream" va permettre de lire un fichier. On utilisera "std::getline"  qui permettra de lire une ligne entière. Car si on utilise seulement ">>" comme pour "std::cin", par défaut, les espaces et les retours à la ligne sont considérés comme étant des délimiteurs, des séparateurs. "std::ws" va permettre de supprimer tous les espaces et retours à la ligne qu'il trouve, pour éviter de les garder dans le flux.
+\begin{lstlisting}[language=C++]
+    std::ifstream fichier { "entrée.txt" };
+
+    int entier { 0 };
+    fichier >> entier;
+    std::cout << "Mon entier vaut : " << entier << std::endl;
+
+    std::string phrase { "" };
+    // On est sûr de ne pas oublier en l'utilisant directement dans std::getline.
+    std::getline(fichier >> std::ws, phrase);
+    std::cout << "Ma phrase vaut : " << phrase << std::endl;
+\end{lstlisting}{}
+
+On peut également tout lire comme ceci:
+
+\begin{lstlisting}[language=C++]
+    std::ifstream fichier { "entrée.txt" };
+    std::string ligne { "" };
+
+    while (std::getline(fichier, ligne))
+    {
+        std::cout << "Ligne lue : " << ligne << std::endl;
+    }
+\end{lstlisting}[]
+
+\subsection{Le buffer}
+Tout ce qu'on envoie ou reçoit d'un flux n'est pas dfirrectement traité mais mis en mémoire dans un tampon. Pour que les données soient concrètement et physiquement envoyé à l'écran, ou écrites sur un fichier ou autre, il faut vider le tampon (flush). C'est notamment ce que fait "std::endl", en plus d'afficher un retour à la ligne. C'est également ce qui se passe quand le fichier est fermé, quand notre obet arrive à la fin de sa portée et est détruit.
+
+\begin{lstlisting}[language=C++]
+    std::ofstream fichier { "sortie.txt" };
+    // Notez que je ne vide pas le tampon.
+    fichier << "Hey, salut toi !\n";
+    fichier << 42 << " " << 2.718;
+
+    // Une entrée pour vous laisser le temps d'ouvrir le fichier sortie.txt.
+    std::string phrase { "" };
+    std::cout << "Tape une phrase quelconque : ";
+    std::cin >> phrase;
+
+    // Je vide explicitement le tampon. Maintenant les données sont écrites.
+    fichier << std::flush;
+\end{lstlisting}
+Pour éviter de flusher trop souvent, ce qui peut être couteux, on peut utiliser '\textbackslash n' à la place de "std::endl;"
+
+\subsection{Les modificateurs de flux}
+On peut modifier les informations qui sont passées dans un flux, comme l'utilisation de "std::boolalpha" et son inverse "std::noboolalpha", qui permet de renvoyer 1 ou 0 à la place de true et false.
+On peut également montrer le signe d'un chiffre avec l'utilisation de "std::showpos". "std::scientific" pour écrire les nombre de manière scientifique.
+
+\subsection{Passer une chaîne en tant que flux}
+On peut passer une chaîne de caractères en tant que flux en utilisant "std::ostringstream" comme flux de sortie et "std::istringstream" comme flux d'entrée (<sstream>).
+
+\begin{lstlisting}[language=C++]
+    double const reel { 10245.789 };
+
+    std::ostringstream flux_chaine;
+    // Notez comment l'utilisation est identique à ce que vous connaissez.
+    flux_chaine << std::scientific << std::showpos << reel << std::endl;
+    // On récupère une chaîne de caractères en appellant str().
+    std::string resultat { flux_chaine.str() };
+
+    std::cout << "Affichage par défaut : " << reel << std::endl;
+    std::cout << "Affichage modifié : " << resultat << std::endl;
+\end{lstlisting}{}
+
+Autre fois on utilisait ce genre de flux pour passer d'un chiffre hexadécimal à base 10. Mais maintenant on peut dirrectement utiliser "std::hex":
+
+\begin{lstlisting}[language=C++]
+    std::istringstream flux_entree { "f8 ad 32" };
+    int rouge { 0 };
+    int vert { 0 };
+    int bleu { 0 };
+
+    flux_entree >> std::hex >> rouge >> vert >> bleu;
+    std::cout << "Niveau de rouge : " << rouge << std::endl;
+    std::cout << "Niveau de vert : " << vert << std::endl;
+    std::cout << "Niveau de bleu : " << bleu << std::endl;
+\end{lstlisting}{}
+
+\section{Les fonctions}
+\begin{lstlisting}[language=C++]
+type_de_retour identificateur(paramètres)
+{
+    instructions
+}
+\end{lstlisting}{}
+Le nommage d'une fonction a les mêmes régles que le nommage des variables. La portée d'une variable déclaré dans une fonction est seulement égale à cette fonction.
+\subsection{Passage par référence}
+De ce fait, on peut passer les arguments par référence lorsqu'on appelle une fonction
+Une référence doit suivre les conditions suivantes:
+\begin{itemize}
+    \item On utilise l’esperluette \& pour ça.
+    \item Elle doit être de même type que la variable cible. Une référence sur un double ne peut pas se voir associée à une variable de type int.
+    \item Une référence cible une seule et unique variable. On ne peut pas créer de référence qui ne cible rien, ni changer la cible d’une référence une fois qu’on l’a créée.
+    \item Une référence peut être définie comme constante, ce qui implique qu’on ne pourra pas modifier sa valeur. 
+\end{itemize}{}
+
+\begin{lstlisting}[language=C++]
+int entier { 40 };
+    // On initialise notre référence pour qu'elle référence entier.
+    int & reference_entier { entier };
+
+    std::cout << "Entier vaut : " << entier << std::endl;
+    std::cout << "Référence vaut : " << reference_entier << std::endl;
+
+    reference_entier += 2;
+    std::cout << "Entier vaut : " << entier << std::endl;
+    std::cout << "Référence vaut : " << reference_entier << std::endl;
+
+    int const entier_constant { 0 };
+    // On peut également déclarer des références constantes sur des entiers constants.
+    int const & reference_const_entier_constant { entier_constant };
+    // Ce qui interdit ce qui suit, car le type référencé est un int const.
+    // reference_const_entier_constant = 1;
+
+    // On ne peut pas déclarer de référence non constante sur un entier constant.
+    //int & reference_entier_constant { entier_constant };
+
+    // On peut par contre tout à fait déclarer une référence constante sur un objet non constant.
+    // On ne peut donc pas modifier la valeur de l'objet en utilisant la référence, mais l'entier
+    // original reste tout à fait modifiable.
+    int const & reference_const_entier { entier };
+    std::cout << "Entier vaut : " << entier << std::endl;
+    std::cout << "Référence constante vaut : " << reference_const_entier << std::endl;
+
+    entier = 8;
+    std::cout << "Entier vaut : " << entier << std::endl;
+    std::cout << "Référence constante vaut : " << reference_const_entier << std::endl;
+
+\end{lstlisting}{}
+
+On évite de passer par référence pour des variables petites (int, char, double) la copie est souvent plus rapide et mois couteuse. 
+Il ne faut jamais renvoyer de référence sur une variable locale d'une fonction.
+
+Déduction de type lors d'appel de fonction :
+\begin{itemize}
+    \item Choisissez auto lorsque vous souhaitez explicitement une valeur (par copie).
+    \item Choisissez auto & (const ou non) lorsque vous souhaitez explicitement une référence.
+    \item Choisissez decltype lorsque vous souhaitez le type exact.
+
+\end{itemize}{}
+
+
+\subsection{La surchage d'une fonction}
+Ce qui caractérise une fonction c'est son nom et le type de paramètre qu'elle reçoit. Donc on peut écrire plusieurs fonctions prennant des types de paramètres différent mais avec le même nom. On parle de signature de la fonction. Le type de retour n'est pas pris en compte dans la signature de la fonction.
+
+\subsection{Les prototypes}
+Les prototypes ne servent pas qu’à résoudre les problèmes d’appels croisés. En effet, ils peuvent être utilisés pour améliorer la lisibilité du code. Tout comme le compilateur, nous n’avons pas besoin de l’implémentation pour savoir comment s’utilise une fonction. En plus, le nom nous suffit souvent, lorsqu’il est bien choisi, pour savoir à quoi sert la fonction.
+Constat: nous ne voulons pas voir l’implémentation. Derrière cette phrase un tantinet abusive, je veux dire que l’essentiel de l’information est réunie dans le prototype.
+
+\section{L'utilisateur est un idiot}
+La fonction attend qu’on respecte une ou plusieurs conditions, que l’on nomme les préconditions. Si celles-ci sont respectées, la fonction s’engage en retour à respecter sa part du marché, qu’on appelle les postconditions. 
+
+\subsection{Les assertions}
+"assert" (<cassert>) va évaluer une condition quelconque. Si la condition est vraie, le programme continue normalement. Par contre, si elle se révèle être fausse, le programme s’arrête brutalement. Voyez par vous-mêmes ce qu’il se passe avec le code suivant.
+"assert" s’utilise non pas pour les erreurs de l’utilisateur mais bel et bien pour celles du programmeur. Quand le développeur est distrait et écrit du code qui résulte en comportements indéterminés (comme un dépassement d’indice pour un tableau), tout peut arriver et justement, ce n’est pas ce qu’on attend du programme. Cela n’a donc pas de sens de vouloir continuer l’exécution.
+
+\begin{lstlisting}[language=C++]
+    std::vector<int> const tableau { -4, 8, 452, -9 };
+    int const index { 2 };
+
+    assert(index >= 0 && "L'index ne doit pas être négatif.");
+    assert(index < std::size(tableau) && "L'index ne doit pas être plus grand que la taille du tableau.");
+    std::cout << "Voici l'élément " << index << " : " << tableau[index] << std::endl;
+\end{lstlisting}{}
+
+Avantages des "assert" :
+\begin{itemize}
+    \item Nos tests sont reproductibles, on peut les lancer à l’infini et vérifier autant que l’on veut. Ils sont déjà écrits, pas de perte de temps donc.
+    \item Conséquence du point précédent, on peut les lancer au fur et à mesure que l’on développe pour vérifier l’absence de régressions, c’est-à-dire des problèmes qui apparaissent suite à des modifications, comme une fonction qui ne renvoie plus un résultat correct alors qu’auparavant, c’était le cas.
+    \item Comme on ne perd pas de temps manuellement, on peut écrire plus de tests, qui permettent donc de détecter plus facilement et rapidement d’éventuels problèmes. Ceux-ci étant détectés plus tôt, ils sont plus faciles à corriger et le code voit sa qualité progresser.
+
+\subsection{Les tests unitaires}
+C'est un morceau de code dont le seul but est de tester un autre morceau de code, afin de vérifier si celui-ci respecte ses contrats. Il est dit unitaire car il teste ce morceau de code en toute indépendance du reste du programme. Pour cela, les morceaux de code qui seront testés unitairement doivent être relativement courts et facilement isolable. 
+Il existe d'autre tests :
+\begin{itemize}
+    \item Les tests d’intégration, qui vérifient que différents modules s’intègrent bien entre eux. On peut tester, par exemple, que le module de payement s’intègre bien au reste de l’application déjà développé.
+    \item Les tests fonctionnels, qui vérifient que le produit correspond bien à ce qu’on a demandé. Des tests fonctionnels sur une calculatrice vérifieront que celle-ci offre bien les fonctionnalités demandées (addition, logarithme, etc) par rapport à ce qui avait été défini et prévu (si l’on avait demandé le calcul de cosinus, il faut que la calculatrice l’implémente).
+    \item Les tests d’UI (interface utilisateur, de l’anglais user interface), qui vérifient, dans le cas d’une application graphique, que les boutons sont bien au bon endroit, les raccourcis, les menus et sous-menus, etc.
+\end{itemize}{}
+
+Grâce aux tests unitaires, vérifier que la fonction fait bien son travail en lui fournissant des paramètres corrects et en vérifiant que les résultats sont valides et correspondent à ce qui est attendu.
+
+\subsection{Les exceptions}
+C’est un mécanisme qui permet à un morceau de code, comme une fonction, de signaler au morceau de code qui l’a appelé que quelque chose d’exceptionnel - c’est-à-dire indépendant du développeur - s’est passé. On dit du premier morceau qu’il lance / lève l’exception (en anglais « throw ») et que le second la rattrape (en anglais « catch »). Cela permet de gérer l’erreur dans le morceau de code appelant.
+
+Contrairement aux assertions qui vont signaler la présence d’erreurs internes, de bugs à corriger, les exceptions s’utilisent pour les erreurs externes, erreurs qui peuvent arriver même si votre programme est parfaitement codé. Ne les voyez donc pas comme deux méthodes opposées, mais, bien au contraire, complémentaires.
+
+"throw" (<stdexcept>) suivi du type de l’exception qu’on veut lancer. Car, de même qu’il existe des types pour stocker des caractères, des entiers, des réels et autres, il existe différents types d’exception pour signaler une erreur de taille, une erreur de mémoire, une erreur d’argument, etc.
+
+
+\begin{lstlisting}[language=C++]
+std::vector<std::string> lire_fichier(std::string const & nom_fichier)
+{
+    std::vector<std::string> lignes {};
+    std::string ligne { "" };
+
+    std::ifstream fichier { nom_fichier };
+    if (!fichier)
+    {
+        // Si le fichier ne s'ouvre pas, alors on lance une exception pour le signaler.
+        throw std::runtime_error("Fichier impossible à ouvrir.");
+    }
+
+    while (std::getline(fichier, ligne))
+    {
+        lignes.push_back(ligne);
+    }
+
+    return lignes;
+}
+
+int main()
+{
+    std::string nom_fichier { "" };
+    std::cout << "Donnez un nom de fichier : ";
+    std::cin >> nom_fichier;
+
+    auto lignes = lire_fichier(nom_fichier);
+    std::cout << "Voici le contenu du fichier :" << std::endl;
+    for (auto const & ligne : lignes)
+    {
+        std::cout << ligne << std::endl;
+    }
+\end{lstlisting}{}
+
+Dès qu’on tombe sur une ligne throw, alors l’exécution de la fonction où l’on était s’arrête immédiatement (on dit que l’exception « suspend l’exécution ») et on revient à la fonction appelante. Si celle-ci n’est pas en mesure de gérer l’exception, alors on revient à la précédente encore. Quand enfin on arrive à la fonction main et que celle-ci ne sait pas comment gérer l’exception elle non plus, la norme C++ prévoit de tuer tout simplement le programme.
+
+\subsection{Attraper les exceptions}
+On dit aussi « catcher » l’exception, afin de pouvoir la traiter. Pour cela, on utilise la syntaxe try catch (try étant l’anglais pour « essaye »).
+
+Concrètement, si un code est situé dans un bloc try et que ce code lève une exception, l’exécution du programme s’arrête à cette ligne et on part directement dans le bloc catch pour traiter la-dite exception. Quant à ce dernier, il faut lui préciser, en plus du mot-clef catch, le type d’exception à rattraper, par référence constante. Une fois une exception attrapée, on peut afficher le message qu’elle contient en appelant la fonction what.
+
+\begin{lstlisting}[language=C++]
+std::vector<std::string> lire_fichier(std::string const & nom_fichier)
+{
+    std::vector<std::string> lignes {};
+    std::string ligne { "" };
+
+    std::ifstream fichier { nom_fichier };
+    if (!fichier)
+    {
+        throw std::runtime_error("Fichier impossible à ouvrir.");
+    }
+
+    while (std::getline(fichier, ligne))
+    {
+        lignes.push_back(ligne);
+    }
+
+    return lignes;
+}
+
+int main()
+{
+    std::string nom_fichier { "" };
+    std::cout << "Donnez un nom de fichier : ";
+    std::cin >> nom_fichier;
+
+    try
+    {
+        // Dans le try, on est assuré que toute exception levée
+        // pourra être traitée dans le bloc catch situé après.
+
+        auto lignes = lire_fichier(nom_fichier);
+        std::cout << "Voici le contenu du fichier :" << std::endl;
+        for (auto const & ligne : lignes)
+        {
+            std::cout << ligne << std::endl;
+        }
+    }
+    // Notez qu'une exception s'attrape par référence constante.
+    catch (std::runtime_error const & exception)
+    {
+        // On affiche la cause de l'exception.
+        std::cout << "Erreur : " << exception.what() << std::endl;
+    }
+\end{lstlisting}{}
+
+\subsection{L'exception générique}
+Il existe un type, du nom de std::exception, qui décrit une exception générique, une erreur quelconque. Si on veut d'abord catcher les exceptions précises, il faut placer le catch générique en après les catch précis.
+
+\begin{lstlisting}[language=C++]
+    try
+    {
+        int entier { std::stoi("+a") };
+        std::cout << "Entier : " << entier << std::endl;
+    }
+    catch (std::invalid_argument const & exception)
+    {
+        // Message particulier affiché seulement dans le cas d'une exception std::invalid_argument.
+        std::cout << "Argument invalide : " << exception.what() << std::endl;
+    }
+    catch (std::exception const & exception)
+    {
+        // Message générique pour tous les autres types d'exception possibles.
+        std::cout << "Erreur : " << exception.what() << std::endl;
+    }
+\end{lstlisting}[]
+
+\section{Les lambdas}
+Une lambda est une fonction, potentiellement anonyme, destinée à être utilisée pour des opérations locales. Détaillons ces différentes caractéristiques.
+\begin{itemize}
+    \item Une lambda est une fonction, c’est-à-dire un regroupement de plusieurs instructions, comme nous l’avons vu au chapitre dédié. Rien de bien nouveau.
+    \item Une lambda peut être anonyme. Contrairement aux fonctions classiques qui portent obligatoirement un nom, un identificateur, une lambda peut être utilisé sans qu’on lui donne de nom.
+    \item Une lambda s’utilise pour des opérations locales. Cela signifie qu’une lambda peut être directement écrite dans une fonction ou un algorithme, au plus près de l’endroit où elle est utilisée, au contraire d’une fonction qui est à un endroit bien défini, à part.
+\end{itemize}{}
+
+Pourquoi utiliser les lambdas et pas les fonctions: le compilateur n’arrive pas à optimiser aussi bien que si on utilise les lambdas. on crée une fonction visible et utilisable par tout le monde, alors qu’elle n’a pour objectif que d’être utilisée localement. On dit que la fonction a une portée globale, alors qu’il vaudrait mieux qu’elle ait une portée locale.
+
+\begin{lstlisting}[language=C++]
+[zone de capture](paramètres de la lambda) -> type de retour { instructions }
+\end{lstlisting}{}
+
+\begin{itemize}
+    \item La zone de capture: par défaut, une lambda est en totale isolation et ne peut manipuler aucune variable de l’extérieur. Grace à cette zone, la lambda va pouvoir modifier des variables extérieures.
+    \item Les paramètres de la lambda: exactement comme pour les fonctions, les paramètres de la lambda peuvent être présents ou non, avec utilisation de références et/ou const possible.
+    \item Le type de retour: encore un élément qui nous est familier. Il est écrit après la flèche ->. Il peut être omis dans quelques cas, mais nous allons l’écrire à chaque fois dans une volonté d’écrire un code clair et explicite.
+    \item Les instructions.
+\end{itemize}{}
+
+Exemple avec "std::find\_if" :
+\begin{lstlisting}[language=C++]
+iterateur = std::find_if(iterateur, std::end(nombres), [](int nombre) -> bool
+        {
+            return nombre % 2 != 0;
+        });
+\end{lstlisting}[]
+
+On peut stocker les lambdas comme ceci:
+\begin{lstlisting}[language=C++]
+    auto lambda_avec_accolades { [](int nombre) -> void { std::cout << "Nombre reçu : " << nombre << std::endl; } };
+    auto lambda_avec_egal = [](int nombre) -> void { std::cout << "Nombre reçu : " << nombre << std::endl; };
+\end{lstlisting}{}
+
+Tout comme il est possible de laisser le compilateur deviner le type de retour, on peut lui laisser le soin de déduire les paramètres de la lambda, en utilisant auto à la place du type explicite des paramètres. Bien entendu, le fait de l’utiliser pour certains paramètres ne nous empêche absolument pas d’avoir des paramètres au type explicitement écrit.
+
+\subsection{La zone de capture}
+Par défaut, une lambda est en totale isolation du reste du code. Elle ne peut pas, par exemple, accéder aux variables de la fonction dans laquelle elle est écrite… sauf si on utilise la zone de capture pour dire à quels objets la lambda peut accéder.
+
+
+\begin{lstlisting}[language=C++]
+    bool const un_booleen { true };
+    int const un_entier { 42 };
+    double const un_reel { 3.1415 };
+
+    auto lambda = [un_booleen, un_entier, un_reel]() -> void
+    {
+        std::cout << "Le booléen vaut " << std::boolalpha << un_booleen << "." << std::endl;
+        std::cout << "L'entier vaut " << un_entier << "." << std::endl;
+        std::cout << "Le réel vaut " << un_reel << "." << std::endl;
+    };
+\end{lstlisting}{}
+Retenez qu’on ne peut pas, par défaut, modifier une variable capturée par copie. Heureusement, il suffit d’un simple mot-clef, "mutable", placé juste après la liste des arguments et avant le type de retour, pour rendre cela possible.
+Comme pour les fonctions ont peut utilisé le passage par référence ou pointeur.
+
+\section{Code générique}
+Pour créer des fonctions génériques en C++, on écrit ce que l’on appelle des templates (en français « modèle » ou « patron ») : au lieu d’écrire directement une fonction, avec des types explicites, on va en écrire une version générique avec des types génériques. C’est ensuite le compilateur qui, quand on en aura besoin, utilisera ce modèle pour créer une fonction avec les bons types. On dit qu'il instancie le modèle.
+
+\begin{lstlisting}[language=C++]
+template <typename T1, typename T2, ...>
+type_de_retour identificateur(paramètres)
+{
+    instructions
+}
+\end{lstlisting}{}
+
+\begin{lstlisting}[language=C++]
+template <typename Collection>
+void afficher(Collection const & iterable)
+{
+    for (auto const & e : iterable)
+    {
+        std::cout << e << std::endl;
+    }
+}
+\end{lstlisting}{}
+Le template est la description générique de ce que fait la fonction. Lorsque le compilateur crée une fonction à partir du modèle pour l’utiliser avec des types donnés, on parle d’instanciation.Lorsqu’on appelle la fonction instanciée, le nom ne change pas de ce dont on a l’habitude. On parle toujours d’appel de fonction
+
+\subsection{Instanciation explicite}
+\begin{lstlisting}[language=C++]
+template <typename T>
+T addition(T x, T y)
+{
+    return x + y;
+}
+
+int main()
+{
+    // Aucun problème, on a deux int ici.
+    std::cout << addition(1, 2) << std::endl;
+    // Oups. Le type déduit, c'est quoi alors ? int ou double ?
+    std::cout << addition(1, 3.1415) << std::endl;
+\end{lstlisting}{}
+\begin{lstlisting}[language=C++]
+template <typename T>
+T entree_securisee()
+{
+    T variable {};
+    while (!(std::cin >> variable))
+    {
+        std::cout << "Entrée invalide. Recommence." << std::endl;
+        std::cin.clear();
+        std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+    }
+
+    return variable;
+}
+\end{lstlisting}{}
+
+\subsection{La surchage}
+Si on veut agir spécifiquement pour un type de variable on va devoir faire appel à la surchage. 
+\begin{lstlisting}[language=C++]
+template <typename Collection>
+void afficher(Collection const & iterable)
+{
+    for (auto const & e : iterable)
+    {
+        std::cout << e << std::endl;
+    }
+}
+
+// Version non-template ne fonctionnant que pour les chaînes de caractères.
+void afficher(std::string const & str)
+{
+    std::cout << str << std::endl;
+}
+\end{lstlisting}{}
+Le changement du comportement par surcharge fonctionne car le compilateur prend en priorité les fonctions non-templates lors du choix de la bonne surcharge. En effet, a priori, il devrait y avoir ambiguïté (et donc erreur), car il y a deux fonctions possibles : celle générée à partir du modèle et celle écrite explicitement.
+
+Heureusement, le choix a été fait par les concepteurs du C++ d’accorder la priorité aux fonctions écrites explicitement. Cela permet donc de rendre valide ce genre de code.
+
+\section{Les structures de données}
+\subsection{Struct - un agrégat de données}
+\begin{lstlisting}[language=C++]
+struct identifiant
+{
+    *membres*
+};
+\end{lstlisting}{}
+\begin{itemize}
+    \item L’identifiant de la structure suit les mêmes règles de nommage que les identifiants de variables et de fonctions.
+    \item En termes de convention, nous suivrons une convention appelée CamelCase : on colle les mots en commençant chaque mot par une majuscule. Il en existe d’autres, mais nous utiliserons celle-là car elle permet facilement de distinguer les variables et les types.
+    \item La définition d’une structure doit se terminer par un point virgule. Il est fréquent de l’oublier.
+\end{itemize}{}
+\subsubsection{Initialisation}
+\begin{lstlisting}[language=C++]
+// Initialisation par défaut.
+InformationsPersonnelles infos {};
+
+// Initialisation à des valeurs choisies.
+InformationsPersonnelles infos { "Clem", "Lagrume", "Fruit", 4 };
+
+// Autre syntaxe, utilisant le signe = comme en C.
+InformationsPersonnelles infos = { "Clem", "Lagrume", "Fruit", 4 };
+\end{lstlisting}
+
+\subsection{std::tuple - une collection hétérogène}
+C'est une collection hétérogène de taille fixée (<tuple). Dans le cas où tous les éléments d'un std::tuple ont un type unique, on peut accéder en donnant "std::get".
+
+\begin{lstlisting}[language=C++]
+    using namespace std::literals;
+    std::tuple { "Clem"s, "Lagrume"s, "Fruit"s, 4 };
+    // Accès en lecture.
+    std::cout << "Prénom : " << std::get<0>(informations) << std::endl;
+    std::cout << "Âge : " << std::get<3>(informations) << std::endl;
+
+    // Accès en écriture.
+    std::get<3>(informations) += 1; // Clem a maintenant 5 ans !
+    std::cout << "Âge maintenant : " << std::get<3>(informations) << std::endl;
+    
+        std::get<std::string>(identite);
+\end{lstlisting}{}
+
+Astuce, on peut créer une fonction qui renvoie un "std::tuple", ça permet de contourner la limite de ne pouvoir retourner qu'une seule valeur à la fois. 
+Le tuple permet de rapidement avoir une collection hétérogène sans avoir à définir un nouveau type. Il est particulièrement utile lorsque l’on a besoin d’une collection hétérogène uniquement pour une portée locale, dans le corps d’une fonction par exemple. Par contre, la syntaxe d’utilisation, notamment pour l’accès aux éléments, est peu lisible.
+La structure permet une plus grande expressivité, notamment par le fait que les éléments ont des noms. Elle est particulièrement adaptée pour une utilisation sur une portée plus globale.
+
+\subsection{std::unordered_map - une table associative}
+C'est un tableau associatif qui permet d'associer une valeur à une clé (<unordered\_map>). Chaque élément est un std::pair<T, U>, où T est de même type que la clé et U de même type que la valeur. Ce type n’est rien d’autre qu’un cas particulier de tuple à deux valeurs uniquement.Ce type fournit deux propriétés qui nous intéressent, qui sont first et second, renvoyant respectivement la clé et la valeur récupérée dans la std::unordered\_map
+
+\begin{lstlisting}[language=C++]
+    using namespace std::literals;
+
+    std::unordered_map<std::string, std::string> dictionnaire
+    {
+        { "Clem"s, "La mascotte du site Zeste de Savoir, toute gentille et toute mignonne."s },
+        { "mehdidou99"s, "Un des auteurs du tutoriel C++."s },
+        { "informaticienzero"s, "Un des auteurs du tutoriel C++."s },
+        { "Taurre"s, "Un super validateur !"s },
+        { "Arius"s, "Un membre super sympa mais qui mord."s },
+        { "Gants de vaisselle"s, "Objets présents sur le site et dont personne ne sait pourquoi."s }
+    };
+
+    for (auto const & paire : dictionnaire)
+    {
+        std::cout << "Clé : " << paire.first << std::endl;
+        
+\end{lstlisting}{}
+
+\begin{lstlisting}[language=C++]
+    // Insertion avec la fonction 'insert'.
+    dictionnaire.insert({ "C++"s, "Le langage que vous apprennez."s });
+
+    // Plusieurs valeurs en même temps. Notez les doubles accolades {}.
+    dictionnaire.insert({ { "Pacman++"s, "C'est un des avatars de mehdidou99."s }, { "Un truc"s, "Personne ne sait ce que c'est."s } });
+
+    // Ajout d'une nouvelle paire avec les crochets.
+    dictionnaire["nohar"] = "Un lama ancestral."s;
+
+    // Utilisation des crochets pour modifier la valeur associée à une clé existante.
+    dictionnaire["Taurre"] = "Un validateur vraiment cool !"s;
+    // Accès en lecture.
+    std::cout << "Qui est Taurre ? " << dictionnaire["Taurre"] << std::endl << std::endl;
+
+    // Suppression par clé.
+    dictionnaire.erase("Un truc"s);
+\end{lstlisting}{}
+
+L’élément first est un itérateur sur l’élément inséré si la clé n’existait pas au préalable, ou sur l’élément correspondant à la clé si elle existe déjà. Cet itérateur est lui-même un std::pair, donc on accède à la clé avec first et à la valeur avec second.
+L’élément second est un booléen indiquant si l’élément a été inséré (true) ou non (false).
+
+\begin{lstlisting}[language=C++]
+    using namespace std::literals;
+
+    std::unordered_map<std::string, double> constantes
+    {
+        { "pi"s, 3.14159 },
+        { "e"s, 2.71828 }
+    };
+
+    auto paire_phi = constantes.insert({ "phi"s, 1.61803 });
+    if (paire_phi.second)
+    {
+        std::cout << "La valeur de " << paire_phi.first->first << " a bien été ajoutée." << std::endl;
+    }
+
+    auto paire_pi = constantes.insert({ "pi"s, 3.0 });
+    if (!paire_pi.second)
+    {
+        std::cout << "La clé " << paire_pi.first->first << " existe déjà et vaut " << paire_pi.first->second << "." << std::endl;
+    }
+\end{lstlisting}{}
+
+Dans le cas où vous souhaitez ajouter une valeur si elle n’existe pas, ou bien mettre à jour la valeur associée à une clé si celle-ci existe, utilisez la fonction insert\_or\_assign, qui fonctionne presque pareil. Elle renvoie une paire semblable, avec toujours le booléen signalant l’insertion (true) ou la mise à jour (false).
+
+
+\begin{lstlisting}[language=C++]
+    // Notez l'accent.
+    std::string const pseudo { "informaticienzéro" };
+    if (membres.find(pseudo) != std::end(membres))
+    {
+        // On a trouvé le membre.
+        std::cout << "Qui est informaticienzero ? " << membres[pseudo] << std::endl;
+    }
+    else
+    {
+        std::cout << "Ce membre n'existe pas." << std::endl;
+    }
+\end{lstlisting}{}
+
+\subsection{std::unordered_set - Représenter un ensemble}
+ C’est un peu comme une table associative dans laquelle il n’y aurait que des clés et pas de valeur (<unordered_set>).
+ 
+ \begin{lstlisting}[language=C++]
+ void ajouter_membre(std::unordered_set<std::string> & membres, std::string const & pseudo)
+{
+    auto it = membres.insert(pseudo);
+    if (it.second)
+    {
+        std::cout << "Bienvenu sur Zeste de Savoir, " << pseudo << "." << std::endl;
+    }
+    else
+    {
+        std::cout << "Désolé, le pseudo " << std::quoted(pseudo) << " est déjà pris." << std::endl;
+    }
+}
+
+int main()
+{
+    std::unordered_set<std::string> pseudos { "mehdidou99", "informaticienzero" };
+
+    // Ajouts.
+    pseudos.insert("Dwayn");
+    pseudos.insert("artragis");
+    pseudos.insert("Taurre");
+
+    ajouter_membre(pseudos, "gbdivers");
+    ajouter_membre(pseudos, "informaticienzero");
+
+    // Suppression.
+    pseudos.erase("Dwayn");
+
+    // Parcours for.
+    for (auto const & cle : pseudos)
+    {
+        std::cout << cle << std::endl;
+    }
+
+    // Recherche de membres.
+    if (pseudos.find("Taurre") != std::end(pseudos))
+    {
+        std::cout << "Taurre est un membre." << std::endl;
+    }
+
+    if (pseudos.find("Gabbro") == std::end(pseudos))
+    {
+        std::cout << "Le pseudo " << std::quoted("Gabbro") << " est libre." << std::endl;
+    }
+ \end{lstlisting}{}
+ 
+\subsection{Ordonnons tout ça}
+En interne, les clés sont ordonnées et triées, mais selon leur « hash ». Non, je n’ai pas fait de faute de français. Un hash est le résultat d’une fonction de hachage. En très bref, c’est une fonction qui transforme une donnée quelconque en une donnée de taille fixée. Pour notre conteneur, cela signifie qu’il ne va plus travailler avec des chaînes de caractères ou autres clés potentiellement grosses, mais avec une version de taille fixe et plus petite, ce qui est beaucoup plus rapide.
+
+Il existe une version alternative des conteneurs std::unordered\_map et std::unordered\_set, qui n’ordonne pas les éléments selon le hash des clés mais directement avec les clés. Ces nouveaux conteneurs se nomment, respectivement, std::map et std::set.
+Dans quel cas utiliser les versions ordonnées : On veut conserver l’ordre des clés.
+On a vraiment énormément de données (de l’ordre du million d’éléments), auquel cas la version non ordonnée est moins rapide que la version ordonnée, de part leur structure interne.
+\subsection{Les énumérations}
+Leur but est de permettre une liste de valeurs fortement typées et fixe. Fortement typées car les valeurs sont d’un type bien précis et défini. Fixe car le nombre d’éléments est fixé et immuable.
+
+On s’en sert typiquement pour limiter le champs des possibilités pour un type. Ainsi, au lieu de stocker le jour de la semaine sous forme de std::string, ce qui n’offre pas de protection si l’utilisateur rentre n’importe quoi, on va utiliser une énumération.
+Une énumération est très légère, on préfèrera la passer par copie.
+
+\begin{lstlisting}[language=C++]
+enum class Nom_enumeration
+{
+    Valeur1,
+    Valeur2
+    // Etc.
+};
+\end{lstlisting}{}
+\begin{lstlisting}[language=C++]
+enum class Jour
+{
+    Lundi,
+    Mardi,
+    Mercredi,
+    Jeudi,
+    Vendredi,
+    Samedi,
+    Dimanche
+};
+
+void message(Jour jour_semaine)
+{
+    if (jour_semaine == Jour::Samedi || jour_semaine == Jour::Dimanche)
+    {
+        std::cout << "Bon week-end !" << std::endl;
+    }
+    else
+    {
+        std::cout << "Courage !" << std::endl;
+    }
+}
+
+int main()
+{
+    Jour const aujourdhui { Jour::Mardi };
+    message(aujourdhui);
+    return 0;
+}
+\end{lstlisting}{}
+
+\section{La syntaxe}
+\bibliographystyle{plain}
+\bibliography{references}
+\end{document}
